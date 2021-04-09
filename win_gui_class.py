@@ -5,7 +5,7 @@ from functools import partial
 # Window mode
 WINDOW_HIDDEN: int = 0
 WINDOW_NORMAL: int = 1
-WINDOW_FULLSCREEN: int = 2
+WINDOW_FULL_SCREEN: int = 2
 WINDOW_MATCH_SCREEN: int = 3
 # Window position
 WIN_DEFAULT_POS: int = 0
