@@ -55,7 +55,7 @@ class Window():
             geometrySize = self.getScreenSize()
             self.window.geometry(geometrySize)
 
-        elif windowMode == WINDOW_FULLSCREEN:
+        elif windowMode == WINDOW_FULL_SCREEN:
             self.window.wm_attributes('-fullscreen', 'true')
 
         elif windowMode == WINDOW_HIDDEN:
