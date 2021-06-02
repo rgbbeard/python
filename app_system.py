@@ -39,7 +39,7 @@ def RequireOS(osName: str, dieOnError=False, debugger: bool = False):
     osName = osName.lower()
     hostOS = sys.platform.lower()
 
-    if (osName in "windows"):
+    if osName in "windows" or osName in "win7" or osName in "win10":
         result = IsWindows()
         if result == 1:
             debug = "Detected OS: Windows"
@@ -49,7 +49,7 @@ def RequireOS(osName: str, dieOnError=False, debugger: bool = False):
         if result == 1:
             debug = "Detected OS: Linux"
 
-    if (osName == "darwin") or (osName == "osx") or (osName == "macos"):
+    if osName == "darwin" or osName == "osx" or osName == "macos" or osName == "macosx":
         result = IsMac()
         if result == 1:
             debug = "Detected OS: Mac"
