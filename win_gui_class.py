@@ -1,3 +1,13 @@
+"""
+Author - Davide - 09/04/2021
+
+Minimum Python version 3.x
+
+Using Python version 3.9
+
+Git - https://github.com/rgbbeard/python/
+"""
+
 import tkinter
 import pyautogui
 from functools import partial
@@ -27,6 +37,7 @@ class Window():
         self.setLook(windowUse=windowUse, windowName=windowName)
 
     # Not working
+    """
     def getScreenSize(stringify: bool = True):
         x, y = pyautogui.size()
 
@@ -35,6 +46,7 @@ class Window():
             return str(x)+"x"+str(y)
 
         return x, y
+    """
 
     def setName(self, windowName: str = ""):
         if(not windowName):
