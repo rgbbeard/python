@@ -28,47 +28,47 @@ CURSOR_SQUARED: str = "dotbox"
 class Window():
     window = None
 
-    def __init__(self, windowName: str = "",
-                 windowUse: int = WIN_NATIVE,
-                 windowMode: int = WINDOW_NORMAL,
-                 windowSize: str = "500x500",
-                 windowPosition: int = WIN_DEFAULT_POS) -> None:
+    def __init__(self, window_name: str = "",
+                 window_use: int = WIN_NATIVE,
+                 window_mode: int = WINDOW_NORMAL,
+                 window_size: str = "500x500",
+                 window_position: int = WIN_DEFAULT_POS) -> None:
         self.window = tkinter.Tk()
-        self.set_name(windowName)
-        self.set_mode(windowMode=windowMode, windowSize=windowSize)
-        self.set_look(windowUse=windowUse, windowName=windowName)
+        self.set_name(window_name)
+        self.set_mode(window_mode=window_mode, window_size=window_size)
+        self.set_look(window_use=window_use, window_name=window_name)
 
-    def set_name(self, windowName: str = ""):
-        if(not windowName):
-            windowName = "New Window"
+    def set_name(self, window_name: str = ""):
+        if(not window_name):
+            window_name = "New Window"
 
-        self.window.title(windowName)
+        self.window.title(window_name)
 
-    def set_mode(self, windowMode: int = WINDOW_NORMAL, windowSize: str = "500x500"):
-        if windowMode == WINDOW_NORMAL:
-            if ("x" not in windowSize) or (not windowSize):
+    def set_mode(self, window_mode: int = WINDOW_NORMAL, window_size: str = "500x500"):
+        if window_mode == WINDOW_NORMAL:
+            if ("x" not in window_size) or (not window_size):
                 print("Using WINDOW_NORMAL, size parameter must be defined too")
                 exit()
             # Set window size
-            self.window.geometry(windowSize)
+            self.window.geometry(window_size)
 
-        elif windowMode == WINDOW_FULL_SCREEN:
+        elif window_mode == WINDOW_FULL_SCREEN:
             self.window.wm_attributes('-fullscreen', 'true')
 
-        elif windowMode == WINDOW_HIDDEN:
+        elif window_mode == WINDOW_HIDDEN:
             self.window.wm_attributes('-fullscreen', 'true')
             self.window.wm_state("iconic")
 
-    def set_look(self, windowUse: int = WIN_NATIVE, windowName: str = "New Window"):
-        if windowUse == WIN_CUSTOM:
+    def set_look(self, window_use: int = WIN_NATIVE, window_name: str = "New Window"):
+        if window_use == WIN_CUSTOM:
             self.window.wm_overrideredirect(True)
             self.display_actions_bar()
 
-    def display_actions_bar(self, windowName: str = ""):
+    def display_actions_bar(self, window_name: str = ""):
         # Window name
         grip = tkinter.Label(
             self.window,
-            text=windowName,
+            text=window_name,
             font="2"
         )
         grip.pack(side=tkinter.TOP, fill=tkinter.BOTH, pady=5)
