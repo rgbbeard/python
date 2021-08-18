@@ -7,9 +7,7 @@ Using Python version 3.9
 
 Git - https://github.com/rgbbeard/python/
 """
-
 import tkinter
-import pyautogui
 from functools import partial
 
 # Window mode
@@ -30,42 +28,29 @@ CURSOR_SQUARED: str = "dotbox"
 class Window():
     window = None
 
-    def __init__(self, windowName: str = "", windowUse: int = WIN_NATIVE, windowMode: int = WINDOW_NORMAL, windowSize: str = "500x500", windowPosition: int = WIN_DEFAULT_POS) -> None:
+    def __init__(self, windowName: str = "",
+                 windowUse: int = WIN_NATIVE,
+                 windowMode: int = WINDOW_NORMAL,
+                 windowSize: str = "500x500",
+                 windowPosition: int = WIN_DEFAULT_POS) -> None:
         self.window = tkinter.Tk()
-        self.setName(windowName)
-        self.setMode(windowMode=windowMode, windowSize=windowSize)
-        self.setLook(windowUse=windowUse, windowName=windowName)
+        self.set_name(windowName)
+        self.set_mode(windowMode=windowMode, windowSize=windowSize)
+        self.set_look(windowUse=windowUse, windowName=windowName)
 
-    # Not working
-    """
-    def getScreenSize(stringify: bool = True):
-        x, y = pyautogui.size()
-
-        if stringify == True:
-            print(stringify)
-            return str(x)+"x"+str(y)
-
-        return x, y
-    """
-
-    def setName(self, windowName: str = ""):
+    def set_name(self, windowName: str = ""):
         if(not windowName):
             windowName = "New Window"
 
         self.window.title(windowName)
 
-    def setMode(self, windowMode: int = WINDOW_NORMAL, windowSize: str = "500x500"):
+    def set_mode(self, windowMode: int = WINDOW_NORMAL, windowSize: str = "500x500"):
         if windowMode == WINDOW_NORMAL:
             if ("x" not in windowSize) or (not windowSize):
                 print("Using WINDOW_NORMAL, size parameter must be defined too")
                 exit()
             # Set window size
             self.window.geometry(windowSize)
-
-        # Not working
-        elif windowMode == WINDOW_MATCH_SCREEN:
-            geometrySize = self.getScreenSize()
-            self.window.geometry(geometrySize)
 
         elif windowMode == WINDOW_FULL_SCREEN:
             self.window.wm_attributes('-fullscreen', 'true')
@@ -74,18 +59,24 @@ class Window():
             self.window.wm_attributes('-fullscreen', 'true')
             self.window.wm_state("iconic")
 
-    def setLook(self, windowUse: int = WIN_NATIVE, windowName: str = "New Window"):
+    def set_look(self, windowUse: int = WIN_NATIVE, windowName: str = "New Window"):
         if windowUse == WIN_CUSTOM:
             self.window.wm_overrideredirect(True)
-            self.displayActionsBar()
+            self.display_actions_bar()
 
-    def displayActionsBar(self, windowName: str = ""):
+    def display_actions_bar(self, windowName: str = ""):
         # Window name
-        tkinter.Label(
+        grip = tkinter.Label(
             self.window,
             text=windowName,
             font="2"
-        ).pack(side=tkinter.TOP, fill=tkinter.BOTH, pady=5)
+        )
+        grip.pack(side=tkinter.TOP, fill=tkinter.BOTH, pady=5)
+
+        # Drag window functionality
+        grip.bind("<ButtonPress-1>", self.grab)
+        grip.bind("<ButtonRelease-1>", self.place)
+        grip.bind("<B1-Motion>", self.move)
 
         # Minimize window button
         tkinter.Button(
@@ -120,7 +111,25 @@ class Window():
         self.window.destroy()
 
     def minimize(self):
-        self.window.wm_state("iconic")
+        self.window.overrideredirect(False)
+        self.window.update_idletasks()
+        self.window.state("iconic")
+        self.window.overrideredirect(True)
+
+    def grab(self, event):
+        self.x = event.x
+        self.y = event.y
+
+    def place(self, event):
+        self.x = None
+        self.y = None
+
+    def move(self, event):
+        deltax = event.x - self.x
+        deltay = event.y - self.y
+        x = self.window.winfo_x() + deltax
+        y = self.window.winfo_y() + deltay
+        self.window.geometry(f"+{x}+{y}")
 
 
 def Separator(winRoot, side: str = "left", height: int = 50):
