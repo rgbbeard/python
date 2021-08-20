@@ -84,7 +84,7 @@ class Window:
 
         # Drag window functionality
         grip.bind("<ButtonPress-1>", self.grab)
-        grip.bind("<ButtonRelease-1>", self.place)
+        grip.bind("<ButtonRelease-1>", self.release)
         grip.bind("<B1-Motion>", self.move)
 
         # Minimize window button
@@ -110,26 +110,25 @@ class Window:
             justify="center",
             relief="flat",
             cursor=CURSOR_SQUARED,
-            command=partial(self.end)
+            command=partial(self.dispose)
         ).pack(anchor="w", side="top")
 
     def deploy(self):
         self.window.mainloop()
 
-    def end(self):
+    def dispose(self):
         self.window.destroy()
 
     def minimize(self):
         self.window.overrideredirect(False)
         self.window.update_idletasks()
         self.window.state("iconic")
-        # self.window.overrideredirect(True)
 
     def grab(self, event):
         self.x = event.x
         self.y = event.y
 
-    def place(self, event):
+    def release(self, event):
         self.x = None
         self.y = None
 
@@ -141,5 +140,5 @@ class Window:
         self.window.geometry(f"+{x}+{y}")
 
 
-def Separator(winRoot, side: str = "left", height: int = 50):
-    tkinter.Label(winRoot).pack(side=side.lower(), pady=height)
+def Separator(win_root, side: str = "left", height: int = 50):
+    tkinter.Label(win_root).pack(side=side.lower(), pady=height)
