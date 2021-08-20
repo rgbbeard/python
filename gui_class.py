@@ -16,11 +16,11 @@ WINDOW_NORMAL: int = 1
 WINDOW_FULL_SCREEN: int = 2
 WINDOW_MATCH_SCREEN: int = 3
 # Window position
-WIN_DEFAULT_POS: int = 0
+WINDOW_DEFAULT_POS: int = 0
 WINDOW_CENTERED: int = 1
 # Window look
-WIN_NATIVE: int = 0
-WIN_CUSTOM: int = 1
+WINDOW_NATIVE: int = 0
+WINDOW_CUSTOM: int = 1
 # Cursors
 CURSOR_SQUARED: str = "dotbox"
 # Font
@@ -34,10 +34,10 @@ class Window:
     window = None
 
     def __init__(self, window_name: str = "",
-                 window_use: int = WIN_NATIVE,
+                 window_use: int = WINDOW_NATIVE,
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
-                 window_position: int = WIN_DEFAULT_POS):
+                 window_position: int = WINDOW_DEFAULT_POS):
         self.x = 0
         self.y = 0
         self.window = tkinter.Tk()
@@ -69,7 +69,7 @@ class Window:
             self.window.wm_state("iconic")
 
     def set_look(self, window_use: int = WIN_NATIVE, window_name: str = "New Window"):
-        if window_use == WIN_CUSTOM:
+        if window_use == WINDOW_CUSTOM:
             self.window.wm_overrideredirect(True)
             self.display_actions_bar(window_name)
 
