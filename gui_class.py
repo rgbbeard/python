@@ -37,7 +37,7 @@ class Window():
                  window_use: int = WIN_NATIVE,
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
-                 window_position: int = WIN_DEFAULT_POS) -> None:
+                 window_position: int = WIN_DEFAULT_POS):
         self.window = tkinter.Tk()
         self.window_title = "New Window"
         self.set_name(window_name)
