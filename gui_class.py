@@ -38,6 +38,8 @@ class Window():
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
                  window_position: int = WIN_DEFAULT_POS):
+        self.x = 0
+        self.y = 0
         self.window = tkinter.Tk()
         self.window_title = "New Window"
         self.set_name(window_name)
@@ -132,10 +134,10 @@ class Window():
         self.y = None
 
     def move(self, event):
-        deltax = event.x - self.x
-        deltay = event.y - self.y
-        x = self.window.winfo_x() + deltax
-        y = self.window.winfo_y() + deltay
+        delta_x = event.x - self.x
+        delta_y = event.y - self.y
+        x = self.window.winfo_x() + delta_x
+        y = self.window.winfo_y() + delta_y
         self.window.geometry(f"+{x}+{y}")
 
 
