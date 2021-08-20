@@ -23,6 +23,11 @@ WIN_NATIVE: int = 0
 WIN_CUSTOM: int = 1
 # Cursors
 CURSOR_SQUARED: str = "dotbox"
+# Font
+FONT_FAMILY = "Arial"
+ARIAL_LARGE = (FONT_FAMILY, 25)
+ARIAL_MEDIUM = (FONT_FAMILY, 18)
+ARIAL_SMALL = (FONT_FAMILY, 15)
 
 
 class Window():
@@ -34,6 +39,7 @@ class Window():
                  window_size: str = "500x500",
                  window_position: int = WIN_DEFAULT_POS) -> None:
         self.window = tkinter.Tk()
+        self.window_title = "New Window"
         self.set_name(window_name)
         self.set_mode(window_mode=window_mode, window_size=window_size)
         self.set_look(window_use=window_use, window_name=window_name)
@@ -43,6 +49,7 @@ class Window():
             window_name = "New Window"
 
         self.window.title(window_name)
+        self.window_title = window_name
 
     def set_mode(self, window_mode: int = WINDOW_NORMAL, window_size: str = "500x500"):
         if window_mode == WINDOW_NORMAL:
@@ -62,7 +69,7 @@ class Window():
     def set_look(self, window_use: int = WIN_NATIVE, window_name: str = "New Window"):
         if window_use == WIN_CUSTOM:
             self.window.wm_overrideredirect(True)
-            self.display_actions_bar()
+            self.display_actions_bar(window_name)
 
     def display_actions_bar(self, window_name: str = ""):
         # Window name
@@ -89,7 +96,7 @@ class Window():
             relief="flat",
             cursor=CURSOR_SQUARED,
             command=partial(self.minimize)
-        ).pack(pady=5, padx=4, anchor="n", side="left")
+        ).pack(anchor="w", side="top")
 
         # Close window button
         tkinter.Button(
@@ -102,9 +109,9 @@ class Window():
             relief="flat",
             cursor=CURSOR_SQUARED,
             command=partial(self.end)
-        ).pack(pady=5, padx=4, anchor="n", side="left")
+        ).pack(anchor="w", side="top")
 
-    def init(self):
+    def deploy(self):
         self.window.mainloop()
 
     def end(self):
@@ -114,7 +121,7 @@ class Window():
         self.window.overrideredirect(False)
         self.window.update_idletasks()
         self.window.state("iconic")
-        self.window.overrideredirect(True)
+        # self.window.overrideredirect(True)
 
     def grab(self, event):
         self.x = event.x
