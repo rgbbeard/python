@@ -30,7 +30,7 @@ ARIAL_MEDIUM = (FONT_FAMILY, 18)
 ARIAL_SMALL = (FONT_FAMILY, 15)
 
 
-class Window():
+class Window:
     window = None
 
     def __init__(self, window_name: str = "",
