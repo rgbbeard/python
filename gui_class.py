@@ -47,7 +47,7 @@ class Window:
         self.set_look(window_use=window_use, window_name=window_name)
 
     def set_name(self, window_name: str = ""):
-        if(not window_name):
+        if not window_name:
             window_name = "New Window"
 
         self.window.title(window_name)
