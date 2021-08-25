@@ -68,7 +68,7 @@ class Window:
             self.window.wm_attributes('-fullscreen', 'true')
             self.window.wm_state("iconic")
 
-    def set_look(self, window_use: int = WIN_NATIVE, window_name: str = "New Window"):
+    def set_look(self, window_use: int = WINDOW_NATIVE, window_name: str = "New Window"):
         if window_use == WINDOW_CUSTOM:
             self.window.wm_overrideredirect(True)
             self.display_actions_bar(window_name)
@@ -78,7 +78,7 @@ class Window:
         grip = tkinter.Label(
             self.window,
             text=window_name,
-            font="2"
+            font=ARIAL_SMALL
         )
         grip.pack(side=tkinter.TOP, fill=tkinter.BOTH, pady=5)
 
@@ -87,7 +87,10 @@ class Window:
         grip.bind("<ButtonRelease-1>", self.release)
         grip.bind("<B1-Motion>", self.move)
 
+        # Add here your navigation bar components
+
         # Minimize window button
+        """
         tkinter.Button(
             self.window,
             width="2",
@@ -112,6 +115,7 @@ class Window:
             cursor=CURSOR_SQUARED,
             command=partial(self.dispose)
         ).pack(anchor="w", side="top")
+        """
 
     def deploy(self):
         self.window.mainloop()
