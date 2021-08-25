@@ -144,5 +144,14 @@ class Window:
         self.window.geometry(f"+{x}+{y}")
 
 
-def Separator(win_root, side: str = "left", height: int = 50):
-    tkinter.Label(win_root).pack(side=side.lower(), pady=height)
+def Separator(win_root, side: str = "left", height: int = 50, full_width: bool = False, full_height: bool = False):
+    fill_mode = "none"
+
+    if full_width and not full_height:
+        fill_mode = "x"
+    elif full_height and not full_width:
+        fill_mode = "y"
+    elif full_height and full_width:
+        fill_mode = "both"
+
+    tkinter.Label(win_root).pack(side=side.lower(), pady=height, fill=fill_mode)
