@@ -35,6 +35,7 @@ class Window:
 
     def __init__(self, window_name: str = "",
                  window_use: int = WINDOW_NATIVE,
+                 window_buttons: bool = False,
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
                  window_position: int = WINDOW_DEFAULT_POS):
@@ -44,7 +45,8 @@ class Window:
         self.window_title = "New Window"
         self.set_name(window_name)
         self.set_mode(window_mode=window_mode, window_size=window_size)
-        self.set_look(window_use=window_use, window_name=window_name)
+        self.set_look(window_use=window_use, window_buttons=window_buttons, window_name=window_name)
+
 
     def set_name(self, window_name: str = ""):
         if not window_name:
@@ -52,6 +54,7 @@ class Window:
 
         self.window.title(window_name)
         self.window_title = window_name
+
 
     def set_mode(self, window_mode: int = WINDOW_NORMAL, window_size: str = "500x500"):
         if window_mode == WINDOW_NORMAL:
@@ -68,19 +71,21 @@ class Window:
             self.window.wm_attributes('-fullscreen', 'true')
             self.window.wm_state("iconic")
 
-    def set_look(self, window_use: int = WINDOW_NATIVE, window_name: str = "New Window"):
+
+    def set_look(self, window_use: int = WINDOW_NATIVE, window_buttons: bool = False, window_name: str = "New Window"):
         if window_use == WINDOW_CUSTOM:
             self.window.wm_overrideredirect(True)
-            self.display_actions_bar(window_name)
+            self.display_actions_bar(window_name, window_buttons)
 
-    def display_actions_bar(self, window_name: str = ""):
+
+    def display_actions_bar(self, window_name: str = "", window_buttons: bool = False):
         # Window name
         grip = tkinter.Label(
             self.window,
             text=window_name,
             font=ARIAL_SMALL
         )
-        grip.pack(side=tkinter.TOP, fill=tkinter.BOTH, pady=5)
+        grip.pack(side="top", fill="both", pady=5)
 
         # Drag window functionality
         grip.bind("<ButtonPress-1>", self.grab)
@@ -90,6 +95,7 @@ class Window:
         # Add here your navigation bar components
 
         # Minimize window button
+        # Commented because it's buggy
         """
         tkinter.Button(
             self.window,
@@ -102,39 +108,46 @@ class Window:
             cursor=CURSOR_SQUARED,
             command=partial(self.minimize)
         ).pack(anchor="w", side="top")
-
-        # Close window button
-        tkinter.Button(
-            self.window,
-            width="2",
-            text="x",
-            bg="#d00",
-            fg="#fff",
-            justify="center",
-            relief="flat",
-            cursor=CURSOR_SQUARED,
-            command=partial(self.dispose)
-        ).pack(anchor="w", side="top")
         """
+        
+        if window_buttons:
+            # Close window button
+            tkinter.Button(
+                self.window,
+                width="2",
+                text="x",
+                bg="#d00",
+                fg="#fff",
+                justify="center",
+                relief="flat",
+                cursor=CURSOR_SQUARED,
+                command=partial(self.dispose)
+            ).pack(anchor="w", side="top")
+
 
     def deploy(self):
         self.window.mainloop()
 
+
     def dispose(self):
         self.window.destroy()
+
 
     def minimize(self):
         self.window.overrideredirect(False)
         self.window.update_idletasks()
         self.window.state("iconic")
 
+
     def grab(self, event):
         self.x = event.x
         self.y = event.y
 
+
     def release(self, event):
         self.x = None
         self.y = None
+
 
     def move(self, event):
         delta_x = event.x - self.x
