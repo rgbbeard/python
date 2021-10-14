@@ -1,2 +1,2 @@
-def charSplit(target: str):
-    return [char for char in target]
+def str_split(string: str):
+    return [char for char in string]
