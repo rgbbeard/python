@@ -5,12 +5,15 @@ Author - Davide - 26/10/2021
 Git - github.com/rgbbeard
 """
 
-from os import (system, path)
+from os import (system, path, match)
 from time import strftime
+from app_utils import get_path
 
 class Logger:
     def __init__(self, type: str = "l", message: str = "", filename: str = "logfile.log"):
-        abspath = os.path.realpath(__file__)
+        if not match(r"\\|\/", filename):
+            filename = get_path(filename) + "/" + filename
+
         self.__logfile = open(filename, "a")
 
         if type == "l":
