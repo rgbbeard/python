@@ -1,3 +1,8 @@
+"""
+Minimum Python version 3.x
+Using Python version 3.9.5
+"""
+
 import os
 
 def str_split(string: str):
