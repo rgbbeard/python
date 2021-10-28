@@ -5,13 +5,16 @@ class JSONMaid():
 	__connection = None
 	__database: str = ""
 
-	def __init__(self, database: str = ""):
+	def __init__(self, database: str = "database.json"):
 		if path.isfile(database) and ".json" in database:
 			self.__database = database
 
 			with open(database, "r") as data:
 				data = data.read()
 				self.__connection = self.__from_json(data)
+
+				if self.__connection["data"] != dict:
+					self.__connection["data"] = dict()
 
 	def __del__(self):
 		self.__connection = None
