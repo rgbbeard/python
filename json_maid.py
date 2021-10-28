@@ -26,6 +26,7 @@ class JSONMaid():
 		data = self.__to_json(self.__connection)
 		database = open(self.__database, "w")
 		database.write(data)
+		database.close()
 
 	def get_records(self):
 		return self.__connection["data"]
