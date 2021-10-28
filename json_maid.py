@@ -1,8 +1,3 @@
-"""
-Minimum Python version 3.x
-Using Python version 3.9.5
-"""
-
 import json
 from os import path
 from re import match as matches
@@ -37,19 +32,38 @@ class JSONMaid():
 	def __to_json(self, data: dict):
 		return json.dumps(data)
 
+	def __reopen(self):
+		if self.__data == None:
+			with open(self.__storage, "r") as data:
+				data = data.read()
+				self.__data = self.__from_json(data)
+
+				if self.__data["data"] != dict:
+					self.__data["data"] = dict()
+
 	def __save(self):
 		data = self.__to_json(self.__data)
 		storage = open(self.__storage, "w")
 		storage.write(data)
 		storage.close()
+		self.__data = None
 
 	def get_records(self):
+		if self.__data == None:
+			self.__reopen()
+
 		return self.__data["data"]
 
 	def records_count(self):
+		if self.__data == None:
+			self.__reopen()
+
 		return len(self.get_records())
 
 	def delete_record(self, id: int):
+		if self.__data == None:
+			self.__reopen()
+
 		data = self.get_records()
 
 		try:
@@ -61,6 +75,9 @@ class JSONMaid():
 			return True
 
 	def update_record(self, old_record: dict, new_record: dict):
+		if self.__data == None:
+			self.__reopen()
+
 		data = self.get_records()
 
 		for x in range(1, self.records_count() + 1):
@@ -73,6 +90,9 @@ class JSONMaid():
 		return False
 
 	def put_record(self, record: dict):
+		if self.__data == None:
+			self.__reopen()
+			
 		can_be_added = True
 	    
 		for x in range(1, self.records_count() + 1):
