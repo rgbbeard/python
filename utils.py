@@ -1,3 +1,5 @@
+import os
+
 def str_split(string: str):
     return [char for char in string]
 
@@ -26,3 +28,20 @@ def abspath(target: str):
     if is_file(target) or is_dir(target):
         return os.path.abspath(target)
     return ""
+
+
+def get_path(from_filename: str, path_format: str = "lunix"):
+    curdir = ""
+
+    if path_format in ("unix", "linux", "lunix"):        
+        curdir = os.path.realpath(from_filename).replace("\\", "/")
+        curdir = curdir.split("/")
+        curdir.pop()
+        curdir = "/".join(curdir)
+
+    elif path_format in ("nt", "windows", "win"):
+        curdir = curdir.split("\\")
+        curdir.pop()
+        curdir = "\\".join(curdir)
+
+    return curdir
