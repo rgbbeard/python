@@ -1,12 +1,8 @@
 """
-Author - Davide - 09/04/2021
-
 Minimum Python version 3.x
-
-Using Python version 3.9
-
-Git - https://github.com/rgbbeard/python/
+Using Python version 3.9.5
 """
+
 import tkinter
 from functools import partial
 
@@ -34,7 +30,7 @@ class Window:
     window = None
 
     def __init__(self, window_name: str = "",
-                 window_use: int = WINDOW_NATIVE,
+                 window_appearance: int = WINDOW_NATIVE,
                  window_buttons: bool = False,
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
@@ -44,9 +40,8 @@ class Window:
         self.window = tkinter.Tk()
         self.window_title = "New Window"
         self.set_name(window_name)
-        self.set_mode(window_mode=window_mode, window_size=window_size)
-        self.set_look(window_use=window_use, window_buttons=window_buttons, window_name=window_name)
-
+        self.set_mode(mode=window_mode, size=window_size)
+        self.set_look(appearance=window_appearance, buttons=window_buttons, name=window_name)
 
     def set_name(self, window_name: str = ""):
         if not window_name:
@@ -55,34 +50,37 @@ class Window:
         self.window.title(window_name)
         self.window_title = window_name
 
+    def set_mode(self, mode: int = WINDOW_NORMAL, size: str = "500x500"):
+        global WINDOW_FULL_SCREEN, WINDOW_HIDDEN, WINDOW_NORMAL
 
-    def set_mode(self, window_mode: int = WINDOW_NORMAL, window_size: str = "500x500"):
         if window_mode == WINDOW_NORMAL:
-            if ("x" not in window_size) or (not window_size):
+            if ("x" not in size) or (not size):
                 print("Using WINDOW_NORMAL, size parameter must be defined too")
                 exit()
             # Set window size
-            self.window.geometry(window_size)
+            self.window.geometry(size)
 
-        elif window_mode == WINDOW_FULL_SCREEN:
+        elif mode == WINDOW_FULL_SCREEN:
             self.window.wm_attributes('-fullscreen', 'true')
 
-        elif window_mode == WINDOW_HIDDEN:
+        elif mode == WINDOW_HIDDEN:
             self.window.wm_attributes('-fullscreen', 'true')
             self.window.wm_state("iconic")
 
+    def set_look(self, appearance: int = WINDOW_NATIVE, buttons: bool = False, name: str = "New Window"):
+        global WINDOW_CUSTOM
 
-    def set_look(self, window_use: int = WINDOW_NATIVE, window_buttons: bool = False, window_name: str = "New Window"):
-        if window_use == WINDOW_CUSTOM:
+        if appearance == WINDOW_CUSTOM:
             self.window.wm_overrideredirect(True)
-            self.display_actions_bar(window_name, window_buttons)
+            self.display_actions_bar(name, buttons)
 
+    def display_actions_bar(self, navbar_title: str = "", navbar_buttons: bool = False):
+        global ARIAL_SMALL, CURSOR_SQUARED
 
-    def display_actions_bar(self, window_name: str = "", window_buttons: bool = False):
         # Window name
         grip = tkinter.Label(
             self.window,
-            text=window_name,
+            text=window_title,
             font=ARIAL_SMALL
         )
         grip.pack(side="top", fill="both", pady=5)
@@ -124,30 +122,28 @@ class Window:
                 command=partial(self.dispose)
             ).pack(anchor="w", side="top")
 
-
     def deploy(self):
         self.window.mainloop()
-
 
     def dispose(self):
         self.window.destroy()
 
-
+    # Minimize window feature
+    # Commented because it's buggy
+    """
     def minimize(self):
         self.window.overrideredirect(False)
         self.window.update_idletasks()
         self.window.state("iconic")
-
+    """
 
     def grab(self, event):
         self.x = event.x
         self.y = event.y
 
-
     def release(self, event):
         self.x = None
         self.y = None
-
 
     def move(self, event):
         delta_x = event.x - self.x
@@ -155,16 +151,3 @@ class Window:
         x = self.window.winfo_x() + delta_x
         y = self.window.winfo_y() + delta_y
         self.window.geometry(f"+{x}+{y}")
-
-
-def Separator(win_root, side: str = "left", height: int = 50, full_width: bool = False, full_height: bool = False):
-    fill_mode = "none"
-
-    if full_width and not full_height:
-        fill_mode = "x"
-    elif full_height and not full_width:
-        fill_mode = "y"
-    elif full_height and full_width:
-        fill_mode = "both"
-
-    tkinter.Label(win_root).pack(side=side.lower(), pady=height, fill=fill_mode)
