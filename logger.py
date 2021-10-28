@@ -1,8 +1,6 @@
 """
 Minimum Python version 3.x
 Using Python version 3.9.5
-Author - Davide - 26/10/2021
-Git - github.com/rgbbeard
 """
 
 from os import (system, path)
