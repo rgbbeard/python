@@ -1,15 +1,22 @@
 import json
 from os import path
+from re import match as matches
+from app_utils import get_path
 
 class JSONMaid():
 	__data = None
 	__storage: str = ""
 
-	def __init__(self, filename: str = "storage.json"):
-		if path.isfile(filename) and ".json" in filename:
-			self.__storage = filename
+	def __init__(self, filename: str = "ftpfiles.json"):
+		foldername: str = ""
 
-			with open(filename, "r") as data:
+		if not matches(r"\/|\\", filename):
+			foldername = get_path(filename)
+
+		if ".json" in filename:
+			self.__storage = f"{foldername}/{filename}"
+
+			with open(self.__storage, "r") as data:
 				data = data.read()
 				self.__data = self.__from_json(data)
 
@@ -62,7 +69,7 @@ class JSONMaid():
 
 	def put_record(self, record: dict):
 		can_be_added = True
-
+	    
 		for x in range(1, self.records_count() + 1):
 			row = self.get_records()[str(x)]
 
