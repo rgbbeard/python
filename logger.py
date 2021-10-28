@@ -5,55 +5,68 @@ Author - Davide - 26/10/2021
 Git - github.com/rgbbeard
 """
 
-from os import (system, path, match)
+from os import (system, path)
+from re import match as matches
 from time import strftime
 from app_utils import get_path
 
 class Logger:
-    def __init__(self, type: str = "l", message: str = "", filename: str = "logfile.log"):
-        if not match(r"\\|\/", filename):
+    def __init__(self, filename: str = "logfile.log"):
+        if not matches(r"\\|\/", filename):
             filename = get_path(filename) + "/" + filename
 
+        self.__filename = filename
         self.__logfile = open(filename, "a")
 
-        if type == "l":
-            self.__log(message)
-        elif type == "i":
-            self.__inform(message)
-        elif type == "w":
-            self.__warn(message)
-        elif type == "e":
-            self.__error(message)
-
     def __del__(self):
-        self.__logfile.close()
+        if self.__logfile != None:
+            self.__logfile.close()
+            self.__logfile = None
 
     def __get_time(self):
         return str("[" + strftime("%H:%M:%S  %d/%m/%Y") + "]")
 
-    def __save(self, message: str):
-        self.__logfile.write(message)
+    def __reopen(self):
+        self.__logfile = open(self.__filename, "a")
 
-    def __log(self, message):
+    def save(self, message: str):
+        if self.__logfile != None:
+            self.__logfile.write(message)
+            self.__logfile.close()
+            self.__logfile = None
+
+    def log(self, message):
+        if self.__logfile == None:
+            self.__reopen()
+
         message = f"[CONSOLE] {message}\n"
         message = self.__get_time() + str(message)
 
-        self.__save(message)
+        self.save(message)
 
-    def __inform(self, message):
+    def inform(self, message):
+        if self.__logfile == None:
+            self.__reopen()
+   
         message = f"[INFO] {message}\n"
         message = self.__get_time() + str(message)
 
-        self.__save(message)
+        self.save(message)
 
-    def __warn(self, message):
+    def warn(self, message):
+        if self.__logfile == None:
+            self.__reopen()
+
         message = f"[WARNING] {message}\n"
         message = self.__get_time() + str(message)
 
-        self.__save(message)
+        self.save(message)
 
-    def __error(self, message):
+    def error(self, message):
+        if self.__logfile == None:
+            self.__reopen()
+            
         message = f"[ERROR] {message}\n"
         message = self.__get_time() + str(message)
 
-        self.__save(message)
+        self.save(message)
