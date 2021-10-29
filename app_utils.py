@@ -4,6 +4,7 @@ Using Python version 3.9.5
 """
 
 import os
+from datetime import datetime
 
 def str_split(string: str):
     return [char for char in string]
@@ -33,6 +34,26 @@ def abspath(target: str):
     if is_file(target) or is_dir(target):
         return os.path.abspath(target)
     return ""
+
+
+def frecent(i: int):
+    ts = datetime.fromtimestamp(i)
+    y = int(ts.strftime("%Y"))
+    mm = int(ts.strftime("%m"))
+    d = int(ts.strftime("%d"))
+    
+    h = int(ts.strftime("%H"))
+    mn = int(ts.strftime("%I"))
+    s = int(ts.strftime("%S"))
+    
+    then = datetime(y, mm, d, h, mn, s)
+    now  = datetime.now()
+    
+    duration = now - then
+    seconds = duration.total_seconds()
+    days = datetime.fromtimestamp(seconds).strftime("%d")
+
+    return int(days) <= 1
 
 
 def get_path(from_filename: str, path_format: str = "lunix"):
