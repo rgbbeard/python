@@ -5,6 +5,7 @@ Using Python version 3.9.5
 
 import os
 from datetime import datetime
+import socket
 
 def str_split(string: str):
     return [char for char in string]
@@ -71,3 +72,9 @@ def get_path(from_filename: str, path_format: str = "lunix"):
         curdir = "\\".join(curdir)
 
     return curdir
+
+
+def ip():
+  h = socket.gethostname()
+  ip = socket.gethostbyname(h)
+  return ip
