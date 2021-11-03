@@ -13,22 +13,27 @@ def str_split(string: str):
 
 def fsize(target: str):  # File/folder size
     if is_file(target) or is_dir(target):
-	    return os.stat(target).st_size
+        return os.stat(target).st_size
     return None
 
 
 def fmdate(target: str):  # Date last modified
     if is_file(target) or is_dir(target):
-	    return os.path.getmtime(target)
+        return os.path.getmtime(target)
     return None
 
 
+def fcdate(target: str):  # Date creation
+    if is_file(target) or is_dir(target):
+        return ctime(fmdate(target))
+    return None
+
 def is_dir(target: str):
-	return os.path.isdir(target)
+    return os.path.isdir(target)
 
 
 def is_file(target: str):
-	return os.path.isfile(target)
+    return os.path.isfile(target)
 
 
 def abspath(target: str):
