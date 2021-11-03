@@ -6,6 +6,7 @@ Using Python version 3.9.5
 import os
 from datetime import datetime
 import socket
+from time import ctime
 
 def str_split(string: str):
     return [char for char in string]
