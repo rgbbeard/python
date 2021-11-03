@@ -43,8 +43,8 @@ def abspath(target: str):
     return ""
 
 
-def frecent(i: int):
-    ts = datetime.fromtimestamp(i)
+def frecent(target: str):
+    ts = datetime.fromtimestamp(fmdate(target))
     y = int(ts.strftime("%Y"))
     mm = int(ts.strftime("%m"))
     d = int(ts.strftime("%d"))
