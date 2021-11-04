@@ -19,7 +19,7 @@ class ThreadMaid:
 		self.__thread_target = t
 
 	def __set_arguments(self, a: tuple):
-		if len(arguments) > 0:
+		if len(a) > 0:
 			self.__thread_arguments = a
 
 	def halt(self):
