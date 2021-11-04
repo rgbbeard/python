@@ -13,7 +13,7 @@ class ThreadMaid:
 		self.__set_target(target)
 		self.__set_arguments(arguments)
 		self.__thread = Thread(target=self.__thread_target, args=self.__thread_arguments)
-	    return self
+		return self
 
 	def __set_target(self, t):
 		self.__thread_target = t
