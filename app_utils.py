@@ -56,11 +56,22 @@ def fext(target: str):
 
 
 def is_xml(target: str):
-    if is_file(target) and "xml" in fext(target):  # Verify file's extension
-        with open(target, "r") as tmp_xml:
-            if re.match(r"(<\?xml version=\".+\" encoding=\".+\"\?>)", tmp_xml[0].strip()):  # Verify header
-                return True
-    return False
+	if is_file(target) and "xml" in fext(target):  # Verify file's extension
+		with open(target, "r") as tmp_xml:
+			for line in tmp_xml:
+				if re.match(r"(<\?xml version=\".+\" encoding=\".+\"\?>)", line.strip()):  # Verify header
+					return True
+	return False
+
+
+def is_pdf(target: str):
+	if is_file(target) and fext(target) == "pdf":  # Verify file's extension
+		with open(target, "rb") as tmp_pdf:
+			for line in tmp_pdf:
+				print(line)
+				# if re.match(r"^\%PDF", .strip()):  # Verify header
+					# return True
+	return False
 
 
 def frecent(target: str):
