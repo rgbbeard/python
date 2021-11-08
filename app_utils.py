@@ -9,6 +9,7 @@ import socket
 from time import ctime
 import pyunpack
 import re
+import xtarfile as tarfile
 
 
 def str_split(string: str):
@@ -56,21 +57,21 @@ def fext(target: str):
 
 
 def is_xml(target: str):
-	if is_file(target) and "xml" in fext(target):  # Verify file's extension
-		with open(target, "r") as tmp_xml:
-			for line in tmp_xml:
-				if re.match(r"(<\?xml version=\".+\" encoding=\".+\"\?>)", line.strip()):  # Verify header
-					return True
-	return False
+    if is_file(target) and "xml" in fext(target):  # Verify file's extension
+        with open(target, "r") as tmp_xml:
+            for line in tmp_xml:
+                if re.match(r"(<\?xml version=\".+\" encoding=\".+\"\?>)", line.strip()):  # Verify header
+                    return True
+    return False
 
 
 def is_pdf(target: str):
-	if is_file(target) and fext(target) == "pdf":  # Verify file's extension
-		tmp_pdf = open(target, "rb")
-		pdf = tmp_pdf.read(8).decode("utf-8")
-		if re.match(r"^\%PDF\-\d", pdf.strip()):  # Verify header
-			return True
-	return False
+    if is_file(target) and fext(target) == "pdf":  # Verify file's extension
+        tmp_pdf = open(target, "rb")
+        pdf = tmp_pdf.read(8).decode("utf-8")
+        if re.match(r"^\%PDF\-\d", pdf.strip()):  # Verify header
+            return True
+    return False
 
 
 def frecent(target: str):
@@ -126,5 +127,15 @@ def un7zip(target: str, destination: str):  # Requires pyunpack and patool insta
     if is_file(target) and fext(target) == "7z":
         try:
             pyunpack.Archive(target).extractall(destination)
+        except Exception as e:
+            print(e)
+
+
+def untar(target: str, destination: str):  # Requires tarfile installed
+    if is_tar(target):
+        try:
+            with tarfile.open(target) as tar:
+                tar.extractall(destination)
+                tar.close()
         except Exception as e:
             print(e)
