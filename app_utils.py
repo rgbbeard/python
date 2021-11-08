@@ -132,7 +132,7 @@ def un7zip(target: str, destination: str):  # Requires pyunpack and patool insta
 
 
 def untar(target: str, destination: str):  # Requires xtarfile installed
-    if is_tar(target):
+    if is_file(target) and fext(target) == "tar":
         try:
             with tarfile.open(target) as tar:
                 tar.extractall(destination)
