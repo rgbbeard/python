@@ -66,11 +66,10 @@ def is_xml(target: str):
 
 def is_pdf(target: str):
 	if is_file(target) and fext(target) == "pdf":  # Verify file's extension
-		with open(target, "rb") as tmp_pdf:
-			for line in tmp_pdf:
-				print(line)
-				# if re.match(r"^\%PDF", .strip()):  # Verify header
-					# return True
+		tmp_pdf = open(target, "rb")
+		pdf = tmp_pdf.read(8).decode("utf-8")
+		if re.match(r"^\%PDF\-\d", pdf.strip()):  # Verify header
+			return True
 	return False
 
 
