@@ -53,7 +53,7 @@ class Window:
     def set_mode(self, mode: int = WINDOW_NORMAL, size: str = "500x500"):
         global WINDOW_FULL_SCREEN, WINDOW_HIDDEN, WINDOW_NORMAL
 
-        if window_mode == WINDOW_NORMAL:
+        if mode == WINDOW_NORMAL:
             if ("x" not in size) or (not size):
                 print("Using WINDOW_NORMAL, size parameter must be defined too")
                 exit()
@@ -80,7 +80,7 @@ class Window:
         # Window name
         grip = tkinter.Label(
             self.window,
-            text=window_title,
+            text=navbar_title,
             font=ARIAL_SMALL
         )
         grip.pack(side="top", fill="both", pady=5)
@@ -90,25 +90,8 @@ class Window:
         grip.bind("<ButtonRelease-1>", self.release)
         grip.bind("<B1-Motion>", self.move)
 
-        # Add here your navigation bar components
-
-        # Minimize window button
-        # Commented because it's buggy
-        """
-        tkinter.Button(
-            self.window,
-            width="2",
-            text="-",
-            bg="#f90",
-            fg="#fff",
-            justify="center",
-            relief="flat",
-            cursor=CURSOR_SQUARED,
-            command=partial(self.minimize)
-        ).pack(anchor="w", side="top")
-        """
-        
-        if window_buttons:
+        # Add here your navigation bar components        
+        if navbar_buttons:
             # Close window button
             tkinter.Button(
                 self.window,
@@ -122,20 +105,11 @@ class Window:
                 command=partial(self.dispose)
             ).pack(anchor="w", side="top")
 
-    def deploy(self):
+    def display(self):
         self.window.mainloop()
 
     def dispose(self):
         self.window.destroy()
-
-    # Minimize window feature
-    # Commented because it's buggy
-    """
-    def minimize(self):
-        self.window.overrideredirect(False)
-        self.window.update_idletasks()
-        self.window.state("iconic")
-    """
 
     def grab(self, event):
         self.x = event.x
