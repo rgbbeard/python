@@ -12,7 +12,7 @@ class ThreadMaid:
 	def setup(self, target, arguments: tuple = ()):
 		self.__set_target(target)
 		self.__set_arguments(arguments)
-		self.__thread = Thread(target=self.__thread_target, args=self.__thread_arguments)
+		self.__thread = threading.Thread(target=self.__thread_target, args=self.__thread_arguments)
 		return self
 
 	def __set_target(self, t):
