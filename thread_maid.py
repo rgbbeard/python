@@ -46,5 +46,5 @@ class ThreadMaid:
 				raise Exception(f"Unable to quit Thread ID: {self.thread_id}")
 
 	def run(self):
-		if self._thread != None:
+		if self.__thread != None:
 			self.__thread.start()
