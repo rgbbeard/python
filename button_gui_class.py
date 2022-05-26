@@ -1,4 +1,4 @@
-from gui import *
+from gui_class import *
 
 def is_array(a):
 	return isinstance(a, list) or isinstance(a, tuple) or isinstance(a, dict)
