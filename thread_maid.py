@@ -4,7 +4,7 @@ from ctypes import (pythonapi, py_object)
 
 class ThreadMaid:
 	__thread = None
-	thread_id = 0
+	__thread_id = 0
 	__thread_target = None
 	__thread_arguments = tuple()
 
@@ -15,7 +15,7 @@ class ThreadMaid:
 		self.__set_target(target)
 		self.__set_arguments(arguments)
 		self.__thread = threading.Thread(target=self.__thread_target, args=self.__thread_arguments)
-		self.thread_id = self.__get_id()
+		self.__thread_id = self.__set_id()
 
 		return self
 
@@ -26,13 +26,16 @@ class ThreadMaid:
 		if len(a) > 0:
 			self.__thread_arguments = a
 
-	def __get_id(self):
+	def __set_id(self):
 		if hasattr(self.__thread, '_thread_id'):
 			return self.__thread._thread_id
 
 		for id, thread in threading._active.items():
 			if thread == self:
 				return id
+
+	def get_id(self):
+		return self.__thread_id
 
 	def halt(self):
 		if self.__thread != None:
