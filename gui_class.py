@@ -1,11 +1,9 @@
-"""
-Minimum Python version 3.x
-Using Python version 3.9.5
-"""
+#!/usr/bin/python3
 
 import tkinter
 from functools import partial
 from math import floor
+from PIL import Image, ImageTk
 
 # Window mode
 WINDOW_HIDDEN: int = 0
@@ -38,7 +36,9 @@ class Window:
                  window_buttons: bool = False,
                  window_mode: int = WINDOW_NORMAL,
                  window_size: str = "500x500",
-                 window_position: int = WINDOW_DEFAULT_POS):
+                 window_position: int = WINDOW_DEFAULT_POS,
+                 window_icon: str = ""
+        ):
         self.__x = 0
         self.__y = 0
         self.__window = tkinter.Tk()
@@ -46,6 +46,7 @@ class Window:
         self.set_mode(mode=window_mode, size=window_size)
         self.set_look(appearance=window_appearance, buttons=window_buttons, name=window_name)
         self.set_position(position=window_position, size=window_size)
+        self.set_icon(icon=window_icon)
 
     def display(self):
         self.__window.mainloop()
@@ -112,6 +113,24 @@ class Window:
             screen_height = floor((int(screen_height) - int(window_height)) / 2)
 
             self.__window.geometry(f"+{screen_width}+{screen_height}")
+
+    # doesn't work yet :(
+    def set_icon(self, icon: str = ""):
+        if not (not icon):
+            try:
+                """ solution 1
+                ico = Image.open(icon)
+                photo = ImageTk.PhotoImage(ico)
+                self.__window.wm_iconphoto(False, photo)"""
+
+                ico = tkinter.PhotoImage(file=icon)
+                """ solution 2
+                self.__window.iconphoto(False, ico)"""
+
+                """ solution 3 """
+                self.__window.tk.call('wm', 'iconphoto', self.__window, ico)
+            except Exception as e:
+                print(e)
 
     def display_actions_bar(self, navbar_title: str = "", navbar_buttons: bool = False):
         global ARIAL_SMALL, CURSOR_SQUARED
