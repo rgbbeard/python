@@ -22,6 +22,8 @@ try:
 				audio_data = wf.readframes(wf.getnframes())
 		except wave.Error:
 			audio = AudioSegment.from_file(audiofile)
+			audio = audio.fade_in(50)
+			audio = audio.fade_out(50)
 			audio_data = audio.raw_data
 			num_channels = audio.channels
 			sample_width = audio.sample_width
