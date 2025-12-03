@@ -2,6 +2,7 @@ import json
 from os import path
 from re import match as matches
 from app_utils import get_path
+from typing import Union
 
 class JSONMaid():
 	__data = None
@@ -59,6 +60,14 @@ class JSONMaid():
 			self.__reopen()
 
 		return len(self.get_records())
+
+	def get_record(self, index: Union[int, str]) -> Union[list, dict, None]:
+		try:
+			return self.get_records()[str(index)]
+		except KeyError as ie:
+			return None
+		except Exception:
+			return None
 
 	def delete_record(self, id: int):
 		if self.__data == None:
