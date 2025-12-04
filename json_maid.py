@@ -4,60 +4,63 @@ from re import match as matches
 from app_utils import get_path
 from typing import Union
 
-class JSONMaid():
-	__data = None
-	__storage: str = ""
+class JSONMaid:
+	_data = None
+	_storage: str = ""
 
-	def __init__(self, filename: str = "ftpfiles.json"):
-		foldername: str = ""
-
-		if not matches(r"\/|\\", filename):
-			foldername = get_path(filename)
-
+	def __init__(self, filename: str = "config.json"):
 		if ".json" in filename:
-			self.__storage = f"{foldername}/{filename}"
+			self._storage = filename
 
-			with open(self.__storage, "r") as data:
+		try:
+			with open(self._storage, "r") as data:
 				data = data.read()
-				self.__data = self.__from_json(data)
+				self._data = json.loads(data)
+		except FileNotFoundError as e:
+			print(f"Configuration file not found {filename}")
 
-				if self.__data["data"] != dict:
-					self.__data["data"] = dict()
+		if self._data is not None and not isinstance(self._data.get("data"), (dict, list, tuple)):
+			self._data.set("data", dict())
+			self._save()
 
 	def __del__(self):
-		self.__data = None
+		self._data = None
+		self._storage = ""
 
-	def __from_json(self, data: str):
-		return json.loads(data)
-
-	def __to_json(self, data: dict):
-		return json.dumps(data)
-
-	def __reopen(self):
-		if self.__data == None:
-			with open(self.__storage, "r") as data:
+	def _reopen(self):
+		if self._data is None:
+			with open(self._storage, "r") as data:
 				data = data.read()
-				self.__data = self.__from_json(data)
+				self._data = json.loads(data)
 
-				if self.__data["data"] != dict:
-					self.__data["data"] = dict()
+				if not isinstance(self._data.get("data"), (dict, list, tuple)):
+					self._data.set("data", dict())
 
-	def __save(self):
-		data = self.__to_json(self.__data)
-		storage = open(self.__storage, "w")
-		storage.write(data)
-		storage.close()
-		self.__data = None
+	def _save(self):
+		try:
+			data = json.dumps(self._data)
+
+			storage = open(self._storage, "w")
+			storage.write(data)
+			storage.close()
+
+			self._data = None
+		except TypeError as te:
+			print(f"Fatal error: {te}")
+			exit()
+		except Exception as e:
+			print(f"Generic json fatal error: {e}")
+			exit()
 
 	def get_records(self):
-		if self.__data == None:
-			self.__reopen()
+		if self._data is None:
+			self._reopen()
 
-		return self.__data["data"]
+		return self._data.get("data")
 
-	def records_count(self):
-		if self.__data == None:
-			self.__reopen()
+	def records_count(self) -> int:
+		if self._data is None:
+			self._reopen()
 
 		return len(self.get_records())
 
@@ -69,38 +72,25 @@ class JSONMaid():
 		except Exception:
 			return None
 
-	def delete_record(self, id: int):
-		if self.__data == None:
-			self.__reopen()
+	def update_record(self, old_record: dict, new_record: dict) -> bool:
+		if self._data is None:
+			self._reopen()
 
 		data = self.get_records()
 
-		try:
-			del data[str(id)]
-		except:
-			return False
-		finally:
-			self.__save()
-			return True
-
-	def update_record(self, old_record: dict, new_record: dict):
-		if self.__data == None:
-			self.__reopen()
-
-		data = self.get_records()
-
-		for x in range(1, self.records_count() + 1):
+		for x in range(self.records_count() + 1):
 			row = data[str(x)]
 
 			if row == old_record:
-				row = new_record
+				data[str(x)] = new_record
+				self._save()
 				return True
 
 		return False
 
-	def put_record(self, record: dict):
-		if self.__data == None:
-			self.__reopen()
+	def put_record(self, record: dict) -> bool:
+		if self._data is None:
+			self._reopen()
 			
 		can_be_added = True
 	    
@@ -115,7 +105,7 @@ class JSONMaid():
 			uid = self.records_count() + 1
 			uid = str(uid)
 
-			self.__data["data"][uid] = record
-			self.__save()
+			self._data.get("data")[uid] = record
+			self._save()
 
 		return can_be_added
