@@ -78,7 +78,7 @@ class JSONMaid:
 
 		data = self.get_records()
 
-		for x in range(self.records_count() + 1):
+		for x in range(self.records_count() - 1):
 			row = data[str(x)]
 
 			if row == old_record:
@@ -94,7 +94,7 @@ class JSONMaid:
 			
 		can_be_added = True
 	    
-		for x in range(1, self.records_count() + 1):
+		for x in range(self.records_count() - 1):
 			row = self.get_records()[str(x)]
 
 			if row == record:
@@ -102,7 +102,7 @@ class JSONMaid:
 				break
 
 		if can_be_added:
-			uid = self.records_count() + 1
+			uid = self.records_count()
 			uid = str(uid)
 
 			self._data.get("data")[uid] = record
